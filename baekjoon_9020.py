@@ -34,17 +34,14 @@ for _ in range(int(input())):
             prime_list.append(i)
             
         cnt = num # 이미 구했던 소수를 제외하기 위한 키값
-        # unique_list = set(prime_list)
-        # prime_list = list(unique_list) # 중복값 제거 ( 할 필요 있나 ?)
-        
+    
+
     for p in prime_list:
         if (num // 2 + 1) < p: # 불필요한 연산을 없애기 위해 num 중간값까지만 계산한다
             break
-        
-        # if (num - p) in prime_list: # num - p가 소수일 경우, 골드바흐 파티션이다
-        #     partition.append([p, num - p])
-        #     partition[-1].sort()
 
+        # num - p가 소수일 경우, 골드바흐 파티션이다
+        # p값을 큰 값부터 작은 값 순으로 사용하면, 파티션 1개를 찾고 바로 탈출할 수 있다.(아직구현안함)
         if binarySearch(prime_list, len(prime_list), num - p):
             partition.append([p, num - p])
             partition[-1].sort()
