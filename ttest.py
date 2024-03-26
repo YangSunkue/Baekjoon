@@ -3,4 +3,4 @@ def fi(n):
         return 1
     return fi(n-1) + fi(n-2)
 
-print(fi(0))
+print(fi(7))
