@@ -32,6 +32,7 @@ for _ in range(n):
             print(-1)
         else:
             print(home[0])
+            
     elif c == 'back':
         if len(home) == 0:
             print(-1)
