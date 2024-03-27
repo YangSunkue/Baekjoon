@@ -1,6 +1,5 @@
-def fi(n):
-    if n <= 2:
-        return 1
-    return fi(n-1) + fi(n-2)
-
-print(fi(7))
+from collections import deque
+snake = deque()
+snake.append((1,1))
+snake.append((2,2))
+print(snake[0])
