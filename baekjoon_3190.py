@@ -58,7 +58,7 @@ while True:
     else: # 사과를 먹으면 사과를 없앤다
         apple.remove(list(snake[-1]))
 
-    # 초+방향 리스트는 마지막 방향전환 초 만큼의 길이이기 때문에, 현재 초가 더 길어지면 방향전환하지 않는다.
+    # 초+방향 리스트는 마지막 방향전환 초 + 1 만큼의 길이이기 때문에, 현재 초가 더 길어지면 방향전환하지 않는다.
     if len(diList) > sec:
         if diList[sec] == 'L':
             whereCount -= 1
