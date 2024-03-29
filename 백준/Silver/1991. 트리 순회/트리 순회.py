@@ -1,11 +1,10 @@
 import sys
 
 n = int(sys.stdin.readline())
-tree = {}  # 부모와 자식을 key, value 형태로 저장
-
+tree = {}
 for _ in range(n):
     root, left, right = sys.stdin.readline().split()
-    tree[root] = [left, right]  # {'A': ['B', 'C'], 'D': ['E', 'F'], ...}
+    tree[root] = [left, right]  # {'root' : ['left', 'right']} 형태로 저장한다
 
 def preorder(root):  # 전위 순회
     if root != '.':
