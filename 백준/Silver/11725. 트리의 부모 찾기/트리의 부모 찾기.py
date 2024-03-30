@@ -1,26 +1,22 @@
-# dfs를 구현하고, 방문 리스트와 부모리스트를 사용한다.
-# 1번 노드의 인접 노드를 방문할 때, 해당 인접 노드들의 부모는 1이다. 
-# 방문 체크만 잘 해주면 부모 노드를 쉽게 구할 수 있다.
 import sys
 sys.setrecursionlimit(10 ** 9)
 
-N = int(sys.stdin.readline())
-
-graph = [[] for _ in range(N + 1)]  # 인덱스 번호를 맞추기 위해 + 1
-for _ in range(N - 1):
+N = int(sys.stdin.readline())  # 노드의 개수
+graph = [[] for _ in range(N + 1)]  # 노드번호와 인덱스번호 동기화를 위해 N + 1
+for _ in range(N - 1):  # 연결정보 입력받기
     root, edge = map(int, sys.stdin.readline().split())
     graph[root].append(edge)
     graph[edge].append(root)
 
 visited = [False] * (N + 1)
-parent = [[] for _ in range(N + 1)]  # 노드 별 부모 노드를 담을 리스트
+parent = [[] for _ in range(N + 1)]  # 노드번호와 인덱스번호 동기화를 위해 N + 1
 
-def dfs(graph, start, visited):
-    visited[start] = True
+def dfs(graph, v, visited):
+    visited[v] = True  # 왔으니 방문체크
 
-    for i in graph[start]:
-        if visited[i] == False:  # 인접 노드 아직 안갔으면
-            parent[i] = start
+    for i in graph[v]:
+        if visited[i] == False:  # 아직 방문 안한 인접 노드로 간다
+            parent[i] = v  # 부모 노드값 입력
             dfs(graph, i, visited)
 
 dfs(graph, 1, visited)
