@@ -1,27 +1,34 @@
+from collections import deque
 import sys
-sys.setrecursionlimit(10 ** 9)
 
-N, M = map(int, sys.stdin.readline().split())
-graph = [[] for _ in range(N + 1)]  # 노드번호와 인덱스번호를 맞추기 위해 + 1
-for _ in range(M):
-    root, edge = map(int, sys.stdin.readline().split())
-    graph[root].append(edge)
-    graph[edge].append(root)
+input = sys.stdin.readline
+N, E = map(int, input().split())  # 노드, 간선
+indegree = [0 for _ in range(N + 1)]
+graph = [[] for _ in range(N + 1)]
+for _ in range(E):
+    root, edge = map(int, input().split())  # 연결정보 입력받기
+    graph[root].append(edge)  
+    indegree[edge] += 1  # 진입차수 + 1
 
-visited = [False] * (N + 1)  # 노드번호와 인덱스번호를 맞추기 위해 + 1
-visited[0] = True  # 모든 노드에 들렸는지 편하게 확인하기 위해 안쓰는 0번을 True로 초기화해준다
-conn = 0
+def topological():
+    queue = deque()
+    result = []
 
-def dfs(graph, v, visited):
-    visited[v] = True  # 들렸으니 방문처리
+    for i in range(1, N + 1):  # 진입차수 확인하여 0인 노드 큐에 삽입
+        if indegree[i] == 0:
+            queue.append(i)
+    
+    while queue:
+        here = queue.popleft()  # 큐에서 노드 꺼내기
+        result.append(here)  # 꺼낸 노드 결과 리스트에 삽입 ( 큐에서 꺼낸 순서대로 위상 순서이다 )
 
-    for i in graph[v]:  # 인접 노드 순회하기
-        if visited[i] == False:  # 인접노드 안들렸을경우
-            dfs(graph, i, visited)
+        for i in graph[here]:  # 현재 노드 연결정보에 대하여 반복한다
+            indegree[i] -= 1  # 간선을 끊어준다
+            if indegree[i] == 0:  # 끊었는데 진입차수가 0이라면 큐에 삽입한다
+                queue.append(i)
+            
+    return result  # 모든 노드 돌았으면 결과 반환
 
-while False in visited:  # False가 하나라도 있다면 반복문 진행(연결 요소가 2개 이상 있다고 판단)
-    start = visited.index(False)  # 들리지 않은 노드를 시작 노드로 설정
-    dfs(graph, start, visited)  # dfs 돌리기
-    conn += 1 # 한번 돌릴때마다 연결 요소 1개씩 증가
-
-print(conn)  # 계산된 연결 요소 개수 출력
+result = topological()
+for re in result:
+    print(re, end=' ')
