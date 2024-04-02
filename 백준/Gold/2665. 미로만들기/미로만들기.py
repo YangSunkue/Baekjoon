@@ -36,10 +36,10 @@ def dijkstra():
                     if goingNogoing(nx, ny):
                         if board[nx][ny] == 0:  # 검은방일 때
                             cost = dist + 1  # 현재노드까지 값에 + 1한 값을 계산
-                            if cost < distroy[nx][ny]:  # 그 값이 다음진행할 좌표값보다 작다면 업뎃하고 큐에 추가
-                                distroy[nx][ny] = cost
-                                heapq.heappush(queue, (cost, nx, ny))
-                                visited[nx][ny] = True
+                            # if cost < distroy[nx][ny]:  # 그 값이 다음진행할 좌표값보다 작다면 업뎃하고 큐에 추가
+                            distroy[nx][ny] = cost
+                            heapq.heappush(queue, (cost, nx, ny))
+                            visited[nx][ny] = True
                             
                         else:  # 하얀방일 때
                             distroy[nx][ny] = dist  # 다음 경로에 현재 부순값 넣기
