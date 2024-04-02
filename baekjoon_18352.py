@@ -1,39 +1,40 @@
+import heapq
 import sys
-
+INF = int(1e9)
 input = sys.stdin.readline
-n = int(input())
-numList = list(map(int, input().split()))
-add, sub, mul, div = map(int, input().split())
 
-maxValue = -1e9
-minValue = 1e9
+N, E, K, start = map(int, input().split())  # 노드, 간선, 찾을거리, 출발노드
+graph = [[] for _ in range(N + 1)]
+for _ in range(E):
+    a, b = map(int, input().split())  # 출발노드, 도착노드
+    graph[a].append([1, b])  # 거리(1), 도착노드
+distance = [INF] * (N + 1)
 
-def DFS(i, calc):
-    global add, sub, mul, div, maxValue, minValue
+def dijkstra(start):
+    queue = []
+    heapq.heappush(queue, (0, start))  # 시작노드거리, 시작노드 큐에 삽입
+    distance[start] = 0  # 시작노드 최단거리 입력
+    result = []
 
-    if i == n:  # 수열의 끝에 오면 최대/최솟값 구하기, 수열번호와 인덱스번호 헷갈리지 말자.
-                # 수열번호가 1이면 인덱스번호는 0
-        maxValue = max(maxValue, calc)
-        minValue = min(minValue, calc)
+    while queue:
+        dist, here = heapq.heappop(queue)
+        if distance[here] < dist:  # 기존 최단경로가 지금 가져온 거리보다 짧다면 패스
+            continue
 
-    else:
-        if add > 0:
-            add -= 1
-            DFS(i+1, calc + numList[i])  # 덧셈연산을 한 경우의 수 구하러 가기
-            add += 1  # 구하고 왔으면 다른연산을 한 경우의 수도 구하러 가야 하니 다시 돌려놓기
-        if sub > 0:
-            sub -= 1
-            DFS(i+1, calc - numList[i])
-            sub += 1
-        if mul > 0:
-            mul -= 1
-            DFS(i+1, calc * numList[i])
-            mul += 1
-        if div > 0:
-            div -= 1
-            DFS(i+1, int(calc / numList[i]))  # calc // numList[i] 를 하면, "내림" 해 버려서 음수일 경우 문제가 생긴다
-            div += 1
+        for i in graph[here]: # 현재노드 인접노드정보 가져오기
+            cost = dist + i[0]  # 최단거리 + 다음노드까지 거리 계산
+            if cost < distance[i[1]]:  # 계산한 게 최단거리라면 최단경로 테이블 갱신
+                distance[i[1]] = cost
+                if cost == K: result.append(i[1])  # K와 일치하면 결과 리스트에 넣기
+                heapq.heappush(queue, (cost, i[1]))  # 갱신했으니 큐에 넣기
 
-DFS(1, numList[0])  # 수열의 첫번째 번호, 첫번째 숫자 인자로 넣고 DFS 실행
-print(int(maxValue))
-print(int(minValue))
+    return result
+
+result = dijkstra(start)
+result.sort()
+
+if len(result) >= 1:  # K와 일치하는 노드가 존재하면 출력
+    for i in result:
+        print(i)
+else:
+    print(-1)

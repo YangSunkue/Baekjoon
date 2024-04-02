@@ -32,6 +32,7 @@ def topological():
 print(topological())
 
 
+# 8 9
 # 7 8
 # 1 2
 # 1 5

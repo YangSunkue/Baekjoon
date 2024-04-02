@@ -20,11 +20,11 @@ def BFS(graph, start, visited):
 
     while queue:
         v = queue.popleft()
-        print(v, end='')
+        print(v, end=' ')
 
         for i in graph[v]:
             if visited[i] == False:
                 queue.append(i)
                 visited[i] = True
 
-BFS(graph, 1, visited)                                                                                  
+BFS(graph, 1, visited)
