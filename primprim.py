@@ -18,7 +18,7 @@ def prim(graph, start):  # 그래프, 시작노드 입력받기
     mst = []
     visited[start] = True
 
-    edges = [(cost, start, end) for cost, end in graph[start]]
+    edges = [(cost, start, end) for cost, end in graph[start]]  # 연결목록 미리 만들어서 리스트화 + heapq변환
     heapq.heapify(edges)
 
     while edges:

@@ -1,34 +1,40 @@
 import sys
-sys.setrecursionlimit(10**9)
 input = sys.stdin.readline
+INF = int(1e9)
 
-def DFS(graph, start, visited, group): # group값으로 그룹을 구분한다
-    visited[start] = group
+n = int(input())
+m = int(input())
 
-    for i in graph[start]:
-        if visited[i] == 0:  # 아직 방문 안 했을 경우
-            result = DFS(graph, i, visited, -group)  # 그룹을 바꿔서 재귀호출
-            if result == False:  # 하위호출에서 False가 나왔다면 이미 이분 그래프 아니므로 함수 종료시키기
-                return False
-        else: 
-            if visited[i] == group:  # 만약 현재그룹과 같다면 False 리턴( 이분 그래프 아님 )
-                return False
-    return True  # 이분 그래프라면 True 리턴
+graph = [[INF] * (n + 1) for _ in range(n + 1)]  # 노드번호와 인덱스 번호를 맞추기 위해서 + 1하여 INF로 초기화
+for a in range(1, n + 1):  # 자기 자신으로 가는 비용은 0 으로 초기화
+    for b in range(1, n + 1):
+        if a == b:
+            graph[a][b] = 0
 
-for _ in range(int(input())):
-    # 사전준비
-    N, E = map(int, input().split())  # 노드, 간선
-    graph = [[] for _ in range(N + 1)]
-    for _ in range(E):
-        a, b = map(int, input().split())
-        graph[a].append(b)
-        graph[b].append(a)
-    visited = [0 for _ in range(N + 1)]
+for _ in range(m):  # 간선 정보 입력받기, 인접 행렬 형태
+    a, b, c = map(int, input().split())  # 출발, 도착, 비용
+    graph[a][b] = c
 
-    # DFS 진행, 그래프가 끊어져 있을 수도 있으므로 가지 않은 노드가 있다면 해당 노드부터 DFS 진행
-    for i in range(1, N + 1):
-        if visited[i] == 0:
-            result = DFS(graph, i, visited, 1)
-            if result == False:
-                break
-    print("YES") if result else print("NO")
+for k in range(1, n + 1):
+    for a in range(1, n + 1):
+        for b in range(1, n + 1):
+            graph[a][b] = min(graph[a][b], graph[a][k] + graph[k][b])  # 현재 값과 k를 거쳐가는 값 중 더 작은 값을 선택
+
+for a in range(1, n + 1):
+    for b in range(1, n + 1):
+        if graph[a][b] == INF:
+            print("INFINITY", end=' ')
+        else:
+            print(graph[a][b], end=' ')
+    print()
+
+
+# 4
+# 7
+# 1 2 4
+# 1 4 6
+# 2 1 3
+# 2 3 7
+# 3 1 5
+# 3 4 4
+# 4 3 2
