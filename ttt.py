@@ -1,40 +1,28 @@
 import sys
 input = sys.stdin.readline
-INF = int(1e9)
 
-n = int(input())
-m = int(input())
+N = int(input())
 
-graph = [[INF] * (n + 1) for _ in range(n + 1)]  # 노드번호와 인덱스 번호를 맞추기 위해서 + 1하여 INF로 초기화
-for a in range(1, n + 1):  # 자기 자신으로 가는 비용은 0 으로 초기화
-    for b in range(1, n + 1):
-        if a == b:
-            graph[a][b] = 0
+# time, point 따로 입력받기
+time, point = [0 for _ in range(N + 1)], [0 for _ in range(N + 1)]
+for i in range(1, N + 1):
+    time[i], point[i] = map(int, input().split())
 
-for _ in range(m):  # 간선 정보 입력받기, 인접 행렬 형태
-    a, b, c = map(int, input().split())  # 출발, 도착, 비용
-    graph[a][b] = c
+# dp 테이블 만들기
+dp = [0 for _ in range(N + 1)]
 
-for k in range(1, n + 1):
-    for a in range(1, n + 1):
-        for b in range(1, n + 1):
-            graph[a][b] = min(graph[a][b], graph[a][k] + graph[k][b])  # 현재 값과 k를 거쳐가는 값 중 더 작은 값을 선택
-
-for a in range(1, n + 1):
-    for b in range(1, n + 1):
-        if graph[a][b] == INF:
-            print("INFINITY", end=' ')
-        else:
-            print(graph[a][b], end=' ')
-    print()
+# 첫째 날(1)부터 로직 시작
+for i in range(1, N + 1):
+    print(dp)
+    # 오늘과 전날 중 큰 값으로 설정, 아래 dp[i]는 findate에 의해서 미리 등록되었을 수 있으니까
+    dp[i] = max(dp[i], dp[i - 1])
 
 
-# 4
-# 7
-# 1 2 4
-# 1 4 6
-# 2 1 3
-# 2 3 7
-# 3 1 5
-# 3 4 4
-# 4 3 2
+    fin_date = i + time[i] - 1  # i일 상담이 끝나는 날
+    # 상담이 N일 내에 끝나면 상담 끝나는 날 값을 설정한다
+    # 기존 값 vs 전날 + 상담포인트
+    if fin_date <= N:
+        dp[fin_date] = max(dp[fin_date], dp[i - 1] + point[i])
+
+
+print(max(dp))
