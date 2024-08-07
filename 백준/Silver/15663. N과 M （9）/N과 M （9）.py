@@ -2,9 +2,9 @@ import sys
 input = sys.stdin.readline
 
 N, M = map(int, input().split())
-visited = [False] * N
 numbers = list(map(int, input().split()))
 numbers.sort()
+visited = [False] * N
 result = [-1] * M
 
 def backTracking(depth):
@@ -17,8 +17,8 @@ def backTracking(depth):
     for i in range(N):
         if not visited[i] and temp != numbers[i]:
             result[depth] = numbers[i]
-            visited[i] = True
             temp = numbers[i]
+            visited[i] = True
             backTracking(depth + 1)
             visited[i] = False
 
