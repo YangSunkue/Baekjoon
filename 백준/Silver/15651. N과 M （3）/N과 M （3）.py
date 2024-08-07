@@ -8,12 +8,10 @@ result = []
 def backTracking(depth, num):
     
     if depth == M:
-        result.append(' '.join(num))
+        print(' '.join(num))
         return
     
     for i in range(1, N + 1):
         backTracking(depth + 1, num + str(i))
 
 backTracking(0, '')
-for re in result:
-    print(re)
