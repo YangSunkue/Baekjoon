@@ -1,53 +1,50 @@
 import sys
 input = sys.stdin.readline
 
-# N개의 웅덩이, L길이의 널빤지
+# 웅덩이 개수, 널빤지 길이
 N, L = map(int, input().split())
-water = []
-
-# 겹치는 웅덩이는 들어오지 않는다
-# 웅덩이 좌표 : [1, 6] -> 1 2 3 4 5
+w = []
 for _ in range(N):
-    water.append(list(map(int, input().split())))
-sortedWater = sorted(water, key=lambda x: (x[0])) # 시작 위치 기준으로 정렬
+    w.append(list(map(int, input().split())))
+water = sorted(w, key=lambda x: (x[0])) # 웅덩이 시작지점 기준으로 정렬
 
-def fix(size, L):
+def fix(size):
     if size % L >= 1:
-        return size // L + 1
+        return (size // L) + 1
     else:
         return size // L
 
 def solve():
 
-    result = 0
-    finalFix = -1
+    result = 0 # 널빤지 개수 세는 변수
+    finalFix = -1 # 마지막으로 덮인(가장 뒤) 널빤지 인덱스
 
-    # 웅덩이가 1개뿐일 경우
     if N == 1:
-        size = sortedWater[0][1] - sortedWater[0][0]
-        return fix(size, L)
-
-    # 웅덩이가 여러개일 경우
+        size = water[0][1] - water[0][0]
+        return fix(size)
+    
     for i in range(N):
-        size = sortedWater[i][1] - sortedWater[i][0] # 웅덩이 크기
-        
-        if size < 0: # 웅덩이 크기가 음수일 경우
+        size = water[i][1] - water[i][0]
+
+        if size < 0: # 웅덩이 크기가 음수일 경우 ( 미뤄졌다면 음수일 가능성이 있다 )
+
+            # 여기서도 겹친부분 체크 꼭 해줘야함.
+            # 아래쪽 체크부분은 바로 다음 웅덩이만 미뤄주기 때문.
             try:
-                if finalFix >= sortedWater[i+1][0]: # 덮인 부분이 다음 웅덩이에 겹쳤다면 다음 웅덩이 시작 지점 미루기
-                    sortedWater[i+1][0] = finalFix + 1
-            except:
-                # 마지막 웅덩이일 경우
+                if finalFix >= water[i+1][0]:
+                    water[i+1][0] = finalFix + 1
+            except: # 맨 마지막 웅덩이라면 continue
                 continue
             continue
-        fixResult = fix(size, L)
+
+        fixResult = fix(size)
         result += fixResult
-        finalFix = sortedWater[i][0] + (L * fixResult) - 1 # 마지막으로 널빤지 덮인 위치(인덱스)
+        finalFix = water[i][0] + (L * fixResult) - 1
 
         try:
-            if finalFix >= sortedWater[i+1][0]: # 덮인 부분이 다음 웅덩이에 겹쳤다면 다음 웅덩이 시작 지점 미루기
-                sortedWater[i+1][0] = finalFix + 1
-        except:
-            # 마지막 웅덩이일 경우
+            if finalFix >= water[i+1][0]: # 덮은 부분이 다음 시작지점과 겹친다면 시작지점 미루기
+                water[i+1][0] = finalFix + 1
+        except: # 맨 마지막 웅덩이라면 continue
             continue
     
     return result
