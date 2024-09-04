@@ -11,7 +11,7 @@ le = 2**N
 num = [[0,1], [2,3]]
 
 # 각사분면 0,0값, 변길이, 행, 열
-def devide(z, le, row, col):
+def divide(z, le, row, col):
 
     if le == 2: # 2*2 정사각형 도달 시
         print(z + num[row][col])
@@ -22,15 +22,15 @@ def devide(z, le, row, col):
     if row >= half:
         if col >= half:
             # 우측아래 사분면
-            devide(z+(plus*3), half, row-half, col-half)
+            divide(z+(plus*3), half, row-half, col-half)
         else:
             # 좌측아래 사분면
-            devide(z+(plus*2), half, row-half, col)
+            divide(z+(plus*2), half, row-half, col)
     elif col >= half:
         # 우측위 사분면
-        devide(z+plus, half, row, col-half)
+        divide(z+plus, half, row, col-half)
     else:
         # 좌측위 사분면
-        devide(z, half, row, col)
+        divide(z, half, row, col)
 
-devide(0, le, R, C)
+divide(0, le, R, C)
