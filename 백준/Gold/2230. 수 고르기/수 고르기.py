@@ -1,7 +1,7 @@
 import sys
 input = sys.stdin.readline
 
-INF = int(1e10)
+INF = int(2e9)
 N, M = map(int, input().split())
 number = [int(input()) for _ in range(N)]
 number.sort()
@@ -20,6 +20,7 @@ def twoPointer():
 
             if start == end:
                 end += 1
+
         else:
             end += 1
     
