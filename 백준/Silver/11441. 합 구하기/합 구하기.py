@@ -1,22 +1,20 @@
 import sys
 input = sys.stdin.readline
 
-N = int(input()) # 수의 개수
-numbers = list(map(int, input().split())) # 수열
-M = int(input()) # 구간의 개수
+N = int(input())
+numbers = list(map(int, input().split()))
+M = int(input())
 
-# 누적합 배열 만들기
-result = [0 for _ in range(N)]
-result[0] = numbers[0]
-for i in range(1, N):
-    result[i] = result[i-1] + numbers[i]
+result = [0 for _ in range(N + 1)] # 입력값과 인덱스를 맞추기 위해 + 1
+result[1] = numbers[0]
+for i in range(2, N + 1):
+    result[i] = result[i-1] + numbers[i-1]
 
-# 결과 출력
 for _ in range(M):
 
-    a, b = map(int, input().split()) # 구간 입력받기
+    i, j = map(int, input().split())
 
-    if a == 1:
-        print(result[b-1])
+    if i == 1:
+        print(result[j])
     else:
-        print(result[b-1] - result[a-2])
+        print(result[j] - result[i-1])
