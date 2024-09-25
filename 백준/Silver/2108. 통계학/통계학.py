@@ -1,42 +1,48 @@
-# 수학, 구현, 정렬
+# 구현, 수학, 정렬
 import sys
 input = sys.stdin.readline
 
-N = int(input()) # 숫자 개수, 홀수
-number = [] # 수 입력받기
+N = int(input()) # 수의 개수, 홀수
+number = []
 for _ in range(N):
     number.append(int(input()))
 
-if N == 1:
+if N == 1: # 수가 1개일 경우
     print(f'{number[0]}\n{number[0]}\n{number[0]}\n0')
 
-else:
-    number.sort() # 정렬
-    # 최빈값 구하기 : 같으면 append하고, 넘었으면 대체한다
+else: # 수가 3개 이상일 경우
+    number.sort()
+
+    # 최빈값 구하기, 첫번째 숫자 넣어놓고 시작한다
     result = [number[0]]
-    maxCnt = 1
     curCnt = 1
+    maxCnt = 1
+
+    # 리스트를 한번 순회하며 최빈값을 찾는다
     for i in range(1, N):
-        if number[i] == number[i-1]: # 이전 숫자가 다시 등장했다면
-            curCnt += 1 # 카운트 1 증가
-            if curCnt == maxCnt: # 최빈값이 겹친다면 append한다
+        
+        if number[i] == number[i-1]: # 이전 숫자와 같을 경우 카운트 추가
+            curCnt += 1
+
+            if curCnt == maxCnt: # 최빈값이 겹칠 경우 append 한다
                 result.append(number[i])
-                maxCnt = curCnt
-            elif curCnt > maxCnt: # 최빈값 역전했으면 대체한다
+
+            elif curCnt > maxCnt: # 최빈값이 갱신되었다면 대체한다
                 result = [number[i]]
                 maxCnt = curCnt
         
-        else: # 다른 숫자가 등장했을 경우 카운트 초기화
+        else: # 새로운 숫자일 경우 카운트 초기화
             curCnt = 1
-            if curCnt == maxCnt: # 최빈값이 겹친다면 append한다
-                result.append(number[i])
-                maxCnt = curCnt
 
+            if curCnt == maxCnt: # 최빈값이 겹칠 경우 append 한다
+                result.append(number[i])
+    
+    
     print(round(sum(number) / N)) # 평균
     print(number[N//2]) # 중앙값
-    if len(result) >= 2:
+    # 최빈값
+    if len(result) > 1:
         result.sort()
-        print(result[1]) # 최빈값 ( 2번째로 작은 값 ) 
-    else:
-        print(result[0]) # 최빈값
+        print(result[1])
+    else: print(result[0])
     print(number[-1] - number[0]) # 범위
