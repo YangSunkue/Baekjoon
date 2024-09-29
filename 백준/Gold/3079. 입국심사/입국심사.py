@@ -2,8 +2,8 @@
 import sys
 input = sys.stdin.readline
 
-N, M = map(int, input().split()) # 심사대 개수, 인원
-test = [int(input()) for _ in range(N)] # 심사하는데 걸리는 시간
+N, M = map(int, input().split())
+test = [int(input()) for _ in range(N)]
 
 # 이분 탐색
 def binarySearch():
@@ -17,16 +17,16 @@ def binarySearch():
         mid = (start + end) // 2
         total = 0
 
-        # 특정 시간(mid)에 대하여 몇 명을 심사하는지 계산한다
+        # 임의의 시간 동안 몇명을 심사하는지 계산
         for i in range(N):
             total += mid // test[i]
-        
-        # 전부 심사했거나 더 많이 심사했을 경우
+
+        # 전부 또는 더 많이 심사했을 경우
         if total >= M:
             end = mid - 1
-            result = min(result, mid) # 최적의 답을 갱신한다
-        
-        # 적게 심사했을 경우
+            result = min(result, mid) # 최소시간 갱신
+
+        # 덜 심사했을 경우       
         else:
             start = mid + 1
 
