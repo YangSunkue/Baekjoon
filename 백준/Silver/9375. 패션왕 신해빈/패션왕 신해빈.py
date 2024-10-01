@@ -1,4 +1,4 @@
-# 수학, 조합론
+# 수학, 조합론, 해시 테이블
 import sys
 input = sys.stdin.readline
 
