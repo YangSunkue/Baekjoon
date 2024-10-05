@@ -6,32 +6,27 @@ input = sys.stdin.readline
 N = int(input())
 graph = [[] for _ in range(N + 1)]
 for i in range(1, N + 1):
-    graph[i].append(int(input()))
+    graph[i].append(int(input())) # 역방향 그래프
 
-def DFS(cur, start, tmpPath): # 현재노드, 시작노드
+def DFS(node, start):
 
-    visited[cur] = True
-    tmpPath.append(cur)
+    visited[node] = True
 
-    for edge in graph[cur]:
-        if edge in path: continue # 이미 싸이클에 포함된 노드일 경우 continue
-
-        if not visited[edge]:
-            DFS(edge, start, tmpPath)
+    for nextNode in graph[node]:
+        if nextNode == start: # 사이클 발견
+            cycle.add(start)
+            return # 한 노드당 사이클은 하나뿐이다
         
-        elif edge == start:
-            for t in tmpPath:
-                path.append(t)
-            
+        if not visited[nextNode]:
+            DFS(nextNode, start)
 
-# 한 노드가 하나의 사이클에만 포함된다면 path를 저장하고 path에 저장된 정점은 visited와 동일하게 취급해야 함
-path = []
-for i in range(1, N + 1):
-    if i not in path:
+cycle = set()
+for start in range(1, N + 1):
+    if start not in cycle:
         visited = [False] * (N + 1)
-        DFS(i, i, [])
+        DFS(start, start)
 
-path.sort()
-print(len(path))
-for pa in path:
-    print(pa)
+result = sorted(list(cycle))
+print(len(result))
+for re in result:
+    print(re)
