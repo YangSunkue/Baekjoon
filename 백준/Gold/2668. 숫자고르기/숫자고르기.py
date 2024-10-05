@@ -8,29 +8,31 @@ graph = [[] for _ in range(N + 1)]
 for i in range(1, N + 1):
     graph[i].append(int(input()))
 
-def DFS(cur, start, tmpPath): # 현재노드, 시작노드
+def DFS(node, start, tmpPath): # 현재노드, 시작노드, 현재경로
 
-    visited[cur] = True
-    tmpPath.append(cur)
+    # 방문 체크, 경로 추가
+    visited[node] = True
+    tmpPath.append(node)
 
-    for edge in graph[cur]:
-        if edge in path: continue # 이미 싸이클에 포함된 노드일 경우 continue
+    for nextNode in graph[node]:
+        if nextNode in cycle: continue # 이미 싸이클에 포함된 노드일 경우 continue
 
-        if not visited[edge]:
-            DFS(edge, start, tmpPath)
+        if not visited[nextNode]:
+            DFS(nextNode, start, tmpPath)
 
-        elif edge == start:
+        elif nextNode == start:
             for t in tmpPath:
-                path.append(t)
+                cycle.append(t)
 
-# 한 노드가 하나의 사이클에만 포함된다면 path를 저장하고 path에 저장된 정점은 visited와 동일하게 취급해야 함
-path = []
-for i in range(1, N + 1):
-    if i not in path:
+# 하나의 노드는 하나의 싸이클에 속한다
+# 따라서 이미 싸이클에 들어간 노드는 탐색하지 않음
+cycle = []
+for start in range(1, N + 1):
+    if start not in cycle:
         visited = [False] * (N + 1)
-        DFS(i, i, [])
+        DFS(start, start, [])
 
-path.sort()
-print(len(path))
-for pa in path:
-    print(pa)
+cycle.sort()
+print(len(cycle))
+for c in cycle:
+    print(c)
