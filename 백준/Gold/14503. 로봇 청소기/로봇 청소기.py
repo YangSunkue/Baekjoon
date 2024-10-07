@@ -45,7 +45,8 @@ def cleaner(x, y, d):
         # 후진했는데 벽이라면 종료
         if room[nx][ny] == 1:
             return
-        x, y = nx, ny
+        else:
+            x, y = nx, ny
 
 # 결과 출력
 cleaner(x, y, d)
