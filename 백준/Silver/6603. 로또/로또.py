@@ -1,9 +1,8 @@
-# 실버2 -> 백트래킹
 import sys
 input = sys.stdin.readline
 
 def back_tracking(depth, start, result):
-
+    
     if depth == 6:
         print(*result)
         return
@@ -12,7 +11,6 @@ def back_tracking(depth, start, result):
         result.append(S[i])
         back_tracking(depth + 1, i + 1, result)
         result.pop()
-
 
 while True:
 
