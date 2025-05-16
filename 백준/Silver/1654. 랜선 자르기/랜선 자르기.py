@@ -6,17 +6,19 @@ data = [int(input()) for _ in range(K)]
 
 start = 1
 end = max(data)
+
 while start <= end:
 
     mid = (start + end) // 2
     count = 0
 
-    for lan in data:
-        count += lan // mid
+    for i in data:
+        count += i // mid
     
-    if count >= N:
-        start = mid + 1
-    else:
+    if count < N:
         end = mid - 1
+
+    else:
+        start = mid + 1
 
 print(end)
