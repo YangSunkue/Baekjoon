@@ -1,63 +1,67 @@
 from collections import deque
-import sys
 import copy
+import sys
+input = sys.stdin.readline
 
-N, M = map(int, input().split()) # 행, 열
-graph = []
-for _ in range(N):
-    graph.append(list(map(int, input().split())))
-dx = [-1, 1, 0, 0]
-dy = [0, 0, -1, 1]
+# 0: 빈칸, 1: 벽, 2: 바이러스
+# 벽 3개를 세우는는 안전 영역 최댓값 구하기
 
-# 바이러스 위치 미리 찾아놓기
+# 백트래킹 : 벽 세우기
+# 벽 3개 되면 BFS실행
+
+# BFS : 바이러스 위치 큐에 넣고 while문 실행, 안전 영역 개수 세서 갱신하기
+
+N, M = map(int, input().split())
+table = [list(map(int, input().split())) for _ in range(N)]
+
+# 바이러스 위치 찾기
 virus = []
-for i in range(N):
-    for j in range(M):
-        if graph[i][j] == 2:
-            virus.append([i, j])
+for x in range(N):
+    for y in range(M):
+        if table[x][y] == 2:
+            virus.append([x, y])
 
+def create_wall(wall):
 
-# 벽 3개를 세우는 모든 경우의 수를 구하기
-# 경우의 수 마다 바이러스를 전파시킨 후 안전영역 개수 세기
-
-def createWall(wall):
-    
     if wall == 3:
-        BFS()
+        bfs()
         return
     
-    for i in range(N):
-        for j in range(M):
-            if graph[i][j] == 0:
-                graph[i][j] = 1
-                createWall(wall + 1)
-                graph[i][j] = 0
+    for x in range(N):
+        for y in range(M):
+            if table[x][y] == 0:
+                table[x][y] = 1
+                create_wall(wall + 1)
+                table[x][y] = 0
 
+dx = [-1, 1, 0 ,0]
+dy = [0, 0, -1, 1]
 result = 0
-def BFS():
-
+def bfs():
+    
     global result
-    trashGraph = copy.deepcopy(graph)
-    queue = deque()
+    
+    temp_table = copy.deepcopy(table)
+    queue = deque([])
     for v in virus:
         queue.append(v)
 
     while queue:
-        
+
         x, y = queue.popleft()
 
         for i in range(4):
             nx = x + dx[i]
             ny = y + dy[i]
 
-            if 0 <= nx < N and 0 <= ny < M and trashGraph[nx][ny] == 0:
-                trashGraph[nx][ny] = 2
+            if 0 <= nx < N and 0 <= ny < M and temp_table[nx][ny] == 0:
+                temp_table[nx][ny] = 2
                 queue.append([nx, ny])
     
-    cnt = 0
-    for g in trashGraph:
-        cnt += g.count(0)
-    result = max(result, cnt)
+    count = 0
+    for t in temp_table:
+        count += t.count(0)
+    result = max(result, count)
 
-createWall(0)
+create_wall(0)
 print(result)
