@@ -3,14 +3,13 @@ from collections import defaultdict, deque
 def solution(info, edges):
     
     graph = defaultdict(list)
-    
     for parent, child in edges:
         graph[parent].append(child)
     
     visited = set()
-    max_sheep = 1
     queue = deque([(1, 0, set(graph[0]))])
     
+    max_sheep = 1
     while queue:
         sheep, wolf, possible = queue.popleft()
         
