@@ -74,12 +74,7 @@ mid = count_upper_length(heart, 'down', N, cookie)
 left_leg = count_leg_length((heart[0] + mid, heart[1]), 'left', N, cookie)
 right_leg = count_leg_length((heart[0] + mid, heart[1]), 'right', N, cookie)
 
-length = []
-length.append(left_arm)
-length.append(right_arm)
-length.append(mid)
-length.append(left_leg)
-length.append(right_leg)
+result = [left_arm, right_arm, mid, left_leg, right_leg]
 
 print(heart[0] + 1, heart[1] + 1)
-print(*length)
+print(*result)
