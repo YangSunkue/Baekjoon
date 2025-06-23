@@ -21,38 +21,26 @@ def male(num, switches):
     idx = num
     while idx - 1 < len(switches):
 
-        if switches[idx - 1] == 0:
-            switches[idx - 1] = 1
-        else:
-            switches[idx - 1] = 0
-        
+        switches[idx - 1] = 1 - switches[idx - 1]
         idx += num
 
 def female(num, switches):
 
-    if switches[num - 1] == 1:
-        switches[num - 1] = 0
-    else:
-        switches[num - 1] = 1
-
+    switches[num - 1] = 1 - switches[num - 1]
+    
     left = num - 2
     right = num
     while left >= 0 and right < len(switches):
         
         if switches[left] == switches[right]:
-            if switches[left] == 1:
-                switches[left] = 0
-                switches[right] = 0
-            else:
-                switches[left] = 1
-                switches[right] = 1
+            switches[left] = 1 - switches[left]
+            switches[right] = 1 - switches[right]
 
         else:
             return
         
         left -= 1
         right += 1
-
 
 N = int(input())
 switches = list(map(int, input().split()))
