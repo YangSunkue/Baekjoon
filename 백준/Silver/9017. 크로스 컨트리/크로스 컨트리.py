@@ -31,38 +31,34 @@ for _ in range(int(input())):
     N = int(input())
     players = list(map(int, input().split()))
 
-    can_win = [False for _ in range(N + 1)]
-    players_set = set(players)
+    valid_teams = [0 for _ in range(N + 1)]
 
-    # 각 팀이 몇 명인지 세고, 6명 이상이면 can win 설정
-    for player in players_set:
-        if players.count(player) >= 6:
-            can_win[player] = True
+    for player in players:
+        valid_teams[player] += 1
     
     # 6명 이상인 팀에만 점수 부여
     score = 1
     for player in players:
-        if can_win[player]:
-            teams[str(player)].append(score)
+        if valid_teams[player] >= 6:
+            teams[player].append(score)
             score += 1
 
     # 6명 이상인 팀들 중 1등 정하기
     winner = (0, int(1e9), int(1e9))  # 팀번호, 합산점수, 5번째 주자 점수 -> 낮아야 우승함
     for team in teams:
-        if len(teams[team]) >= 6:
 
-            # 팁 합산 점수
-            team_score = sum(teams[team][:4])
-            # 다섯번째 주자 점수
-            five_score = teams[team][4]
+        # 팁 합산 점수
+        team_score = sum(teams[team][:4])
+        # 다섯번째 주자 점수
+        five_score = teams[team][4]
 
-            # 기존 우승후보 팀보다 점수가 낮을 경우 우승후보 팀 교체
-            if team_score < winner[1]:
+        # 기존 우승후보 팀보다 점수가 낮을 경우 우승후보 팀 교체
+        if team_score < winner[1]:
+            winner = (team, team_score, five_score)
+
+        # 기존 우승후보 팀과 점수가 같으면 5번째 주자 점수로 결정
+        elif team_score == winner[1]:
+            if five_score < winner[2]:
                 winner = (team, team_score, five_score)
-
-            # 기존 우승후보 팀과 점수가 같으면 5번째 주자 점수로 결정
-            elif team_score == winner[1]:
-                if five_score < winner[2]:
-                    winner = (team, team_score, five_score)
     
     print(winner[0])
