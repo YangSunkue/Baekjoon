@@ -34,9 +34,8 @@ note = []
 for word in word_to_count:
     note.append([word_to_count[word], word])
 
-"""알파벳 정렬 후 등장횟수, 단어길이 역순으로 정렬"""
-note.sort(key = lambda x: x[1])
-note.sort(key = lambda x: (x[0], len(x[1])), reverse = True)
+"""(등장횟수 역순, 단어길이 역순, 알파벳 순) 우선순위 정렬"""
+note.sort(key = lambda x: (-x[0], -len(x[1]), x[1]))
 
 for word in note:
     print(word[1])
