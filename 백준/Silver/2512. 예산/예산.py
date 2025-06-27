@@ -20,9 +20,7 @@ def calc(limit, arr):
     left = 0
     right = len(arr) - 1
 
-    # limit_idx 포함한 오른쪽은 전부 상한가다
-    # 일단 모든 요소가 상한가보다 작다고 가정
-    limit_idx = len(arr)
+    limit_idx = 0
 
     while left <= right:
 
