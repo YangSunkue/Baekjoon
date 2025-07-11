@@ -34,8 +34,8 @@ for _ in range(int(input())):
             if values[i] == cur_max:
                 sell_values = values[:i + 1]  # 팔고 나서 삭제할 값들
                 values = values[i + 1:]  # 팔고 남은 값들 (이어서 계산할 애들)
-
-                # 이득 계산 후 최댓값 리스트에서 지우기
+                
+                # 이득 계산
                 for v in sell_values:
                     result += (cur_max - v)
                 break
