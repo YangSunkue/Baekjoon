@@ -24,10 +24,6 @@ public class Main {
 	
 	private static int getStackSum(Deque<Integer> stack) {
 		
-		if (stack.isEmpty()) {
-			return 0;
-		}
-		
 		int result = 0;
 		while (!stack.isEmpty()) {
 			result += stack.pop();
