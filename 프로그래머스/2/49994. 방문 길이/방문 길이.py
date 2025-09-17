@@ -12,12 +12,6 @@ def solution(dirs):
             return True
         return False
     
-    def is_first(sx, sy, ex, ey):
-        road = (sx, sy, ex, ey)
-        if road in visited:
-            return False
-        return True
-    
     dx = [-1, 1, 0, 0]
     dy = [0, 0, -1, 1]
 
@@ -35,9 +29,9 @@ def solution(dirs):
         ny = y + dy[direction]
         
         if can_go(nx, ny):
-            if is_first(x, y, nx, ny):
-                visited.add((x, y, nx, ny))
-                visited.add((nx, ny, x, y))
+            
+            visited.add((x, y, nx, ny))
+            visited.add((nx, ny, x, y))
             
             x = nx
             y = ny
