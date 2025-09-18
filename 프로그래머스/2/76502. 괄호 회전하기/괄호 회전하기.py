@@ -31,9 +31,8 @@ def solution(st):
     result = 0
     if is_correct(''.join(queue)):
         result += 1
-    for i in range(len(st) - 1):
-        item = queue.popleft()
-        queue.append(item)
+    for _ in range(len(st) - 1):
+        queue.rotate(-1)
 
         if is_correct(''.join(queue)):
             result += 1
