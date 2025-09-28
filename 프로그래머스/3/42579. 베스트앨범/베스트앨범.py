@@ -2,38 +2,27 @@ from collections import defaultdict
 
 def solution(genres, plays):
 
-    genres_dict = defaultdict(lambda: [0, []])  # {장르: [재생횟수, [노래1, 노래2...]]}
+    """
+    장르별 총재생수 기준 정렬
+    장르별 고유번호, 재생수 기준 정렬해서 담기
+    """
+
+    genres_dict = defaultdict(list)  # 장르: [(고유번호, 재생수), ...]
+    plays_dict = defaultdict(int)    # 장르: 총 재생수
+
     for i in range(len(genres)):
-        key = genres[i]
-        genres_dict[key][0] += plays[i]
-        genres_dict[key][1].append(i)
+        genre = genres[i]
+        play = plays[i]
 
-    plays_dict = defaultdict(int)
-    for i, p in enumerate(plays):
-        plays_dict[i] = p
-
-    # 재생횟수 내림차순 정렬
-    genres_dict = dict(sorted(genres_dict.items(), key=lambda x: -x[1][0]))
-    plays_dict = dict(sorted(plays_dict.items(), key=lambda x: (-x[1], x[0])))
+        genres_dict[genre].append((i, play))
+        plays_dict[genre] += play
     
+    # 총재생수 기준 장르 정렬 [(장르, 재생수)]
+    sorted_dict = sorted(plays_dict.items(), key=lambda x: -x[1])
+
     result = []
-    for key in genres_dict:
-        
-        data = genres_dict[key][1]  # [1, 2, 3 ..]
-        if len(data) == 1:
-            result.append(data[0])
-        else:
-            first = None
-            second = None
-            for p in plays_dict:  # {1: 200, 2 :100 ...}
-                if p in data:
-                    if first == None:
-                        first = p
-                    else:
-                        second = p
-                        break
-            
-            result.append(first)
-            result.append(second)
+    for genre, _ in sorted_dict:
+        sorted_songs = sorted(genres_dict[genre], key=lambda x: (-x[1], x[0]))
+        result.extend([idx for idx, _ in sorted_songs[:2]])
     
     return result
