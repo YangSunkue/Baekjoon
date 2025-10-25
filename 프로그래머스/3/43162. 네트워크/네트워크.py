@@ -1,40 +1,33 @@
-from collections import deque
+from collections import defaultdict, deque
 
 def solution(n, computers):
     
-    table = [[] for _ in range(n)]
-    
-    # 연결리스트 형태 변경
-    for i in range(n):
-        for j in range(n):
-            if i == j:
-                continue
-                
-            if computers[i][j] == 1:
-                table[i].append(j)
-    
-    visited = [False] * n
-    
-    # BFS 함수        
-    def bfs(start):
+    def BFS(start):
         
-        queue = deque([])
-        queue.append(start)
+        queue = deque([start])
+        visited.add(start)
         
         while queue:
             
-            node = queue.popleft()
-            visited[node] = True
+            cur_node = queue.popleft()
             
-            for next in table[node]:
-                if not visited[next]:
-                    queue.append(next)
+            for adj_node in adj_list[cur_node]:
+                if adj_node not in visited:
+                    queue.append(adj_node)
+                    visited.add(adj_node)
     
-    # 메인 로직
-    result = 0
+    # 인접 행렬 -> 인접 리스트 변환
+    adj_list = defaultdict(list)
     for i in range(n):
-        if not visited[i]:
-            bfs(i)
+        for j in range(n):
+            if i != j and computers[i][j] == 1:
+                adj_list[i].append(j)
+    
+    visited = set()
+    result = 0
+    for node in range(n):
+        if node not in visited:
+            BFS(node)
             result += 1
     
     return result
