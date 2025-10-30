@@ -1,14 +1,16 @@
 import functools
 
 def solution(numbers):
-    
+
     def compare(a, b):
-        t1 = str(a) + str(b)
-        t2 = str(b) + str(a)
-        
-        return (t1 > t2) - (t1 < t2)
+        s1 = a + b
+        s2 = b + a
+
+        return (s1 > s2) - (s1 < s2)
     
+    numbers = list(map(str, numbers))
     numbers.sort(key=functools.cmp_to_key(compare), reverse=True)
-    
-    result = ''.join(map(str, numbers))
+
+    result = ''.join(numbers)
+
     return result if int(result) != 0 else '0'
