@@ -7,12 +7,12 @@ def solution(scoville, K):
     result = 0
     while len(scoville) >= 2:
         if scoville[0] >= K:
-            return result
+            break
         
         a = heapq.heappop(scoville)
         b = heapq.heappop(scoville)
-
         heapq.heappush(scoville, a + (b * 2))
+        
         result += 1
     
-    return result if scoville[0] >= K else -1  
+    return result if scoville[0] >= K else -1
