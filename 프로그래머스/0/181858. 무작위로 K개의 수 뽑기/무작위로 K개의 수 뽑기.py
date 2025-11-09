@@ -9,7 +9,7 @@ def solution(arr, k):
             result.append(num)
         
         if len(result) == k:
-            return result
+            break
     
     result += [-1] * (k - len(result))
     return result
