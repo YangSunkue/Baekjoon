@@ -8,12 +8,13 @@ def can_go(pos):
     return 0 <= pos <= 100000 and not visited[pos]
 
 visited = [False] * 100001
-
 queue = deque([(N, 0)])
+
 result = None
 while queue:
-    
+
     pos, dist = queue.popleft()
+
     if pos == K:
         result = dist
         break
