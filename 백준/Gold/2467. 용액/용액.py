@@ -12,10 +12,6 @@ input = sys.stdin.readline
 N = int(input())
 liquid = list(map(int, input().split()))
 
-def get_diff_from_zero(value):
-    return 0 + abs(value)
-
-
 diff = int(1e10)
 result = None
 
@@ -24,22 +20,18 @@ right = N - 1
 while left < right:
 
     value = liquid[left] + liquid[right]
-    cur_diff = get_diff_from_zero(value)
+    cur_diff = abs(value)
+
+    if cur_diff < diff:
+            diff = cur_diff
+            result = (liquid[left], liquid[right])
 
     if value == 0:
-        result = (liquid[left], liquid[right])
         break
 
-    elif value > 0:
-        if cur_diff < diff:
-            diff = cur_diff
-            result = (liquid[left], liquid[right])
+    if value > 0:
         right -= 1
-
-    elif value < 0:
-        if cur_diff < diff:
-            diff = cur_diff
-            result = (liquid[left], liquid[right])
-        left += 1
+    else:
+         left += 1
 
 print(*result)
