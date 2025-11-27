@@ -1,7 +1,7 @@
 from collections import defaultdict, deque
 import sys
 input = sys.stdin.readline
-sys.setrecursionlimit(10**8)
+sys.setrecursionlimit(10**7)
 
 """
 양방향 그래프
@@ -15,37 +15,20 @@ for _ in range(N - 1):
     adj_list[s].append(e)
     adj_list[e].append(s)
 
-parents = [-1] * (N + 1)
-
-visited = [False] * (N + 1)
-visited[R] = True
-queue = deque([R])
-while queue:
-
-    cur = queue.popleft()
-
-    for node in adj_list[cur]:
-        if not visited[node]:
-            parents[node] = cur
-            visited[node] = True
-
-            queue.append(node)
-
 dp = [0] * (N + 1)
 
-def dfs(cur):
+def dfs(cur, parent):
     size = 1
 
     for node in adj_list[cur]:
-        if parents[cur] == node:
+        if node == parent:
             continue
-        size += dfs(node)
+        size += dfs(node, cur)
     
     dp[cur] = size
     return size
 
-
-dfs(R)
+dfs(R, -1)
 for _ in range(Q):
     root = int(input())
     print(dp[root])
