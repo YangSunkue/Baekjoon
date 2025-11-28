@@ -2,15 +2,8 @@ from collections import defaultdict, deque
 import sys
 input = sys.stdin.readline
 
-"""
-1. 목표(W)까지 최장거리 구하기
-root가 여러개일 수 있음.
-
-다익스트라(최장거리) -> 시간초과
-위상 정렬 -> O
-"""
-
 for _ in range(int(input())):
+
     N, K = map(int, input().split())
     times = [0] + list(map(int, input().split()))
 
@@ -21,18 +14,19 @@ for _ in range(int(input())):
         s, e = map(int, input().split())
         adj_list[s].append(e)
         indegree[e] += 1
-
-    W = int(input())   # 목표 노드
-
+    
+    W = int(input())
+    
     distances = [0] * (N + 1)
     queue = deque([])
 
     for i in range(1, N + 1):
         if indegree[i] == 0:
-            distances[i] = times[i]
             queue.append(i)
+            distances[i] = times[i]
     
     while queue:
+
         cur = queue.popleft()
 
         for adj_node in adj_list[cur]:
