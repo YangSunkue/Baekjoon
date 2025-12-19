@@ -26,4 +26,5 @@ for i in range(1, N):
 result = 0
 for i in range(10):
     result = (result + dp[N][i][1023]) % MOD
+
 print(result)
