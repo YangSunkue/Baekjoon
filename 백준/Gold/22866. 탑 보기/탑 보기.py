@@ -4,61 +4,56 @@
 
 오른쪽으로 한번, 왼쪽으로 한번 순회
 """
+import sys
+input = sys.stdin.readline
+
 N = int(input())
-b = list(map(int, input().split()))
+b = [0] + list(map(int, input().split()))
 
-left_buildings = [[0] * 2 for _ in range(N)]  # [[건물개수, 가까운왼쪽건물], [건물개수, 가까운왼쪽건물] ...]
-right_buildings = [[0] * 2 for _ in range(N)]
+left = [[0] * 2 for _ in range(N + 1)]
+right = [[0] * 2 for _ in range(N + 1)]
 
-# 좌측에 보이는 건물 탐색
 stack = []
-for idx in range(N):
+for idx in range(1, N + 1):
     while stack and b[stack[-1]] <= b[idx]:
         stack.pop()
     
     if stack:
-        left_buildings[idx][0] = len(stack)
-        left_buildings[idx][1] = stack[-1] + 1
-
+        left[idx][0] = len(stack)
+        left[idx][1] = stack[-1]
+    
     stack.append(idx)
 
-# 우측에 보이는 건물 탐색
 stack = []
-for idx in range(N - 1, -1, -1):
+for idx in range(N, 0, -1):
     while stack and b[stack[-1]] <= b[idx]:
         stack.pop()
     
     if stack:
-        right_buildings[idx][0] = len(stack)
-        right_buildings[idx][1] = stack[-1] + 1
+        right[idx][0] = len(stack)
+        right[idx][1] = stack[-1]
 
     stack.append(idx)
 
-# 결과 종합
-result = [[0] * 2 for _ in range(N)]
-for i in range(N):
+result = [[0] * 2 for _ in range(N + 1)]
+for i in range(1, N + 1):
 
-    result[i][0] = left_buildings[i][0] + right_buildings[i][0]
+    result[i][0] = left[i][0] + right[i][0]
 
-    l = left_buildings[i][1]
-    r = right_buildings[i][1]
-    if l > 0 and r > 0:
-        l_dist = abs((i + 1) - l)
-        r_dist = abs((i + 1) - r)
+    l, r = left[i][1], right[i][1]
+    l_dist, r_dist = abs(i - l), abs(i - r)
 
+    if l == 0 and r == 0:
+        result[i][1] = 0
+    elif l > 0 and r > 0:
         if l_dist < r_dist:
             result[i][1] = l
         elif l_dist > r_dist:
             result[i][1] = r
         else:
             result[i][1] = min(l, r)
-
-
-
     elif l == 0 or r == 0:
         result[i][1] = max(l, r)
-    elif l == 0 and r == 0:
-        result[i][1] = 0
 
-for r in result:
+for r in result[1:]:
     print(0) if r[0] == 0 else print(*r)
