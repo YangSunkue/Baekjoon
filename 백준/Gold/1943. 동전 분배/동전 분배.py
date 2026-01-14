@@ -22,7 +22,7 @@ for _ in range(3):
 
     target = total // 2
 
-    dp = [False] * (target + 2)
+    dp = [False] * (target + 1)
     dp[0] = True
 
     for coin, count in coins:
@@ -33,5 +33,7 @@ for _ in range(3):
                         dp[i + (coin * use)] = True
                     else:
                         break
+
+        if dp[target]: break
         
-    print(1) if dp[target] else print(0)
+    print(1 if dp[target] else 0)
